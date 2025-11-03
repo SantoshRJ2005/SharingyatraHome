@@ -153,7 +153,6 @@
             gap: 1.5rem;
         }
 
-        /* --- MODIFIED: Added Mobile Menu Toggle Button --- */
         .mobile-menu-toggle {
             display: none; /* Hidden on desktop */
             background: none;
@@ -162,7 +161,6 @@
             color: var(--text-primary);
             cursor: pointer;
         }
-        /* --- END MODIFIED --- */
 
         /* --- Dropdown Styles --- */
         .nav-button {
@@ -784,7 +782,6 @@
             }
         }
         
-        /* --- MODIFIED: Complete Mobile Nav CSS --- */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
@@ -857,13 +854,12 @@
                 display: block; 
             }
 
+            /* --- MODIFIED --- */
             .theme-switch {
-                display: flex; /* Make it a flex container */
-                justify-content: space-between; /* Space out label and toggle */
-                align-items: center;
-                padding: 0.75rem 1rem; /* Match button padding */
-                margin: 0; /* Reset margins */
+                /* Center the theme switch */
+                margin: 0.5rem auto; 
             }
+            /* --- END MODIFIED --- */
 
             .btn-primary {
                 width: 100%;
@@ -871,7 +867,6 @@
                 padding: 0.75rem 1rem; /* Match button padding */
             }
         }
-        /* --- END MODIFIED --- */
     </style>
 </head>
 <body>
@@ -885,6 +880,7 @@
         <button class="mobile-menu-toggle" id="mobile-menu-toggle">
             <i class="fa-solid fa-bars"></i>
         </button>
+
         <div class="nav-links" id="nav-links">
             
             <div class="dropdown">
@@ -1146,7 +1142,7 @@
                 localStorage.setItem('theme', theme);
             });
 
-            // --- *** MODIFIED: NEW MOBILE NAV LOGIC *** ---
+            // --- MOBILE NAV LOGIC ---
             const menuToggle = document.getElementById('mobile-menu-toggle');
             const navLinks = document.getElementById('nav-links');
             const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
@@ -1174,7 +1170,7 @@
                     }
                 });
             });
-            // --- *** END OF NEW MOBILE NAV LOGIC *** ---
+            // --- END OF MOBILE NAV LOGIC ---
 
 
             // --- OFFER CALCULATOR LOGIC ---
