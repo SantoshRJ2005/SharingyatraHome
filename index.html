@@ -150,10 +150,21 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 1.5rem; /* Increased gap for new buttons */
+            gap: 1.5rem;
         }
 
-        /* --- NEW: Dropdown Styles --- */
+        /* --- MODIFIED: Added Mobile Menu Toggle Button --- */
+        .mobile-menu-toggle {
+            display: none; /* Hidden on desktop */
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+        /* --- END MODIFIED --- */
+
+        /* --- Dropdown Styles --- */
         .nav-button {
             background: none;
             border: none;
@@ -772,7 +783,8 @@
                 grid-template-columns: 1fr;
             }
         }
-
+        
+        /* --- MODIFIED: Complete Mobile Nav CSS --- */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
@@ -782,22 +794,42 @@
             }
             
             .navbar {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1.5rem; /* Added padding for column layout */
-            }
-            .nav-links {
-                width: 100%;
-                /* justify-content: space-between; <-- Removed */
-                flex-direction: column; /* Stack nav items */
-                align-items: stretch; /* Make items full-width */
-                gap: 0.5rem; /* Tighter gap for stacked items */
+                flex-direction: row; /* Keep logo and hamburger side-by-side */
+                padding: 1rem 5%;
             }
 
-            /* --- NEW: Mobile Dropdown Styles --- */
+            .mobile-menu-toggle {
+                display: block; /* Show hamburger button */
+            }
+
+            .nav-links {
+                display: none; /* Hide menu by default */
+                position: absolute;
+                top: 100%; /* Position below navbar */
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-surface);
+                padding: 1rem;
+                box-shadow: var(--shadow);
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+                border-top: 1px solid var(--border-color);
+            }
+
+            .nav-links.active {
+                display: flex; /* Show menu when JS adds .active class */
+            }
+
+            /* Disable hover effect on mobile */
+            .dropdown:hover .dropdown-menu {
+                display: none; 
+            }
+
             .dropdown {
                 width: 100%;
             }
+
             .nav-button {
                 width: 100%;
                 display: flex;
@@ -807,9 +839,6 @@
                 background-color: var(--bg-surface-inset);
                 border-radius: 8px;
             }
-            .nav-button:hover {
-                color: var(--text-primary); /* Keep hover color */
-            }
 
             .dropdown-menu {
                 position: relative; /* Un-stick it */
@@ -818,22 +847,31 @@
                 border: none;
                 border-top: 1px solid var(--border-color);
                 border-radius: 0;
-                margin-top: 0;
-                /* Let hover still control display */
+                margin-top: 0.5rem;
+                display: none; /* Hide by default */
+                padding-left: 1rem; /* Indent for clarity */
+            }
+
+            /* Show dropdown menu when JS adds .active class */
+            .dropdown-menu.active {
+                display: block; 
             }
 
             .theme-switch {
-                /* Center the theme switch */
-                margin: 0.5rem auto; 
+                display: flex; /* Make it a flex container */
+                justify-content: space-between; /* Space out label and toggle */
+                align-items: center;
+                padding: 0.75rem 1rem; /* Match button padding */
+                margin: 0; /* Reset margins */
             }
 
             .btn-primary {
-                /* Make book now button full width */
                 width: 100%;
                 text-align: center;
+                padding: 0.75rem 1rem; /* Match button padding */
             }
-            /* --- End of Mobile Dropdown Styles --- */
         }
+        /* --- END MODIFIED --- */
     </style>
 </head>
 <body>
@@ -843,7 +881,11 @@
             <i class="fa-solid fa-route"></i>
             <span>SharingYatra</span>
         </a>
-        <div class="nav-links">
+
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="nav-links" id="nav-links">
             
             <div class="dropdown">
                 <button class="nav-button dropdown-toggle">
@@ -865,7 +907,9 @@
                     <a href="http://partnersagency.vercel.app/signup">Agency</a>
                 </div>
             </div>
+            
             <label class="theme-switch">
+                <span>Dark Mode</span>
                 <input type="checkbox" id="theme-toggle">
                 <span class="slider">
                     <i class="fa-solid fa-sun"></i>
@@ -1103,6 +1147,36 @@
                 localStorage.setItem('theme', theme);
             });
 
+            // --- *** MODIFIED: NEW MOBILE NAV LOGIC *** ---
+            const menuToggle = document.getElementById('mobile-menu-toggle');
+            const navLinks = document.getElementById('nav-links');
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+
+            // 1. Hamburger Menu Toggle
+            if (menuToggle) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // 2. Dropdown Toggles (for mobile)
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', (e) => {
+                    // Check if we are in mobile view (by seeing if hamburger is visible)
+                    if (window.getComputedStyle(menuToggle).display !== 'none') {
+                        // Prevent button from trying to navigate
+                        e.preventDefault(); 
+                        
+                        // Find the sibling .dropdown-menu
+                        const dropdownMenu = toggle.nextElementSibling;
+                        if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+                            dropdownMenu.classList.toggle('active');
+                        }
+                    }
+                });
+            });
+            // --- *** END OF NEW MOBILE NAV LOGIC *** ---
+
 
             // --- OFFER CALCULATOR LOGIC ---
             const slider = document.getElementById('distance-slider');
@@ -1182,7 +1256,7 @@
                 });
             });
 
-            // --- NEW CHATBOT LOGIC ---
+            // --- CHATBOT LOGIC ---
             const chatToggle = document.getElementById('chat-toggle');
             const chatWindow = document.getElementById('chat-window');
             const chatClose = document.getElementById('chat-close');
