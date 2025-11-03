@@ -1,0 +1,187 @@
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- Theme Toggle Logic ---
+    const themeToggle = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (savedTheme === 'dark') {
+        themeToggle.checked = true;
+    }
+    themeToggle.addEventListener('change', () => {
+        const theme = themeToggle.checked ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    });
+
+
+    // --- OFFER CALCULATOR LOGIC ---
+    const slider = document.getElementById('distance-slider');
+    const distanceDisplay = document.getElementById('distance-display');
+    const basePriceDisplay = document.getElementById('base-price-display');
+    const offerDisplay = document.getElementById('offer-display');
+    const finalPriceDisplay = document.getElementById('final-price-display');
+    const savingsDisplay = document.getElementById('savings-display');
+
+    const BASE_PRICE_PER_KM = 15; 
+
+    function calculatePrice(km) {
+        let discountPercent = 0;
+        
+        if (km >= 1 && km <= 5) {
+            discountPercent = 0.02; // 2%
+        } else if (km >= 6 && km <= 10) {
+            discountPercent = 0.05; // 5%
+        } else if (km >= 11 && km <= 20) {
+            discountPercent = 0.08; // 8%
+        } else if (km >= 21 && km <= 30) {
+            discountPercent = 0.12; // 12%
+        } else if (km > 30) {
+            discountPercent = 0.15; // 15%
+        }
+        
+        const standardPrice = km * BASE_PRICE_PER_KM;
+        const discountAmount = standardPrice * discountPercent;
+        const finalPrice = standardPrice - discountAmount;
+        
+        return {
+            km: km,
+            standardPrice: standardPrice,
+            finalPrice: finalPrice,
+            discountPercent: discountPercent,
+            savings: discountAmount
+        };
+    }
+
+    function updateCalculator() {
+        // Check if all elements exist before updating
+        if (slider && distanceDisplay && basePriceDisplay && offerDisplay && finalPriceDisplay && savingsDisplay) {
+            const km = parseInt(slider.value);
+            const price = calculatePrice(km);
+            
+            distanceDisplay.textContent = `${km} km`;
+            basePriceDisplay.textContent = `₹${price.standardPrice.toFixed(0)}`;
+            offerDisplay.textContent = `${price.discountPercent * 100}% OFF`;
+            finalPriceDisplay.textContent = `₹${price.finalPrice.toFixed(0)}`;
+            savingsDisplay.textContent = `You save ₹${price.savings.toFixed(2)}!`;
+        }
+    }
+    
+    // Only add listener if slider exists
+    if (slider) {
+        slider.addEventListener('input', updateCalculator);
+        updateCalculator(); // Run on load
+    }
+
+
+    // --- FAQ Accordion Logic ---
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            
+            faqItems.forEach(otherItem => {
+                otherItem.classList.remove('active');
+            });
+            
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+
+    // --- *** NEW CHATBOT LOGIC *** ---
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatWindow = document.getElementById('chat-window');
+    const chatClose = document.getElementById('chat-close');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatMainMenu = document.getElementById('chat-main-menu');
+    const chatBackMenu = document.getElementById('chat-back-menu');
+    const chatBackBtn = document.getElementById('chat-back-btn');
+
+    // --- Helper Functions ---
+    
+    function addMessageToChat(content, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('chat-message', type);
+        
+        if (type === 'bot-message') {
+            messageDiv.innerHTML = `<p>${content}</p>`;
+        } else {
+            messageDiv.textContent = content;
+        }
+        
+        chatMessages.appendChild(messageDiv);
+        scrollToBottom();
+    }
+
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function showMainMenu() {
+        chatMainMenu.style.display = 'flex';
+        chatBackMenu.style.display = 'none';
+    }
+
+    function showBackMenu() {
+        chatMainMenu.style.display = 'none';
+        chatBackMenu.style.display = 'block';
+    }
+
+    // --- Event Listeners ---
+
+    // Toggle chat window
+    chatToggle.addEventListener('click', () => {
+        chatWindow.classList.toggle('active');
+        if (chatWindow.classList.contains('active')) {
+            showMainMenu(); // Always show main menu on open
+            scrollToBottom();
+        }
+    });
+
+    // Close chat window
+    chatClose.addEventListener('click', () => {
+        chatWindow.classList.remove('active');
+    });
+
+    // Handle clicks on the MAIN MENU
+    chatMainMenu.addEventListener('click', (e) => {
+        if (e.target.classList.contains('chat-menu-btn')) {
+            const button = e.target;
+            const link = button.dataset.link;
+            const text = button.textContent;
+            
+            // 1. Add user message
+            addMessageToChat(text, 'user-message');
+
+            // 2. Prepare and add bot reply
+            let botHtml = '';
+            if (link === '/#calculator') {
+                botHtml = `Sure! You can see our offers on the <a href="${link}" onclick="document.getElementById('chat-window').classList.remove('active')">Offer Calculator</a> right on this page.`;
+            } else {
+                botHtml = `Here is the link for <a href="${link}" target="_blank">${text}</a>.`;
+            }
+            
+            setTimeout(() => {
+                addMessageToChat(botHtml, 'bot-message');
+            }, 500);
+            
+            // 3. Show the "Back" menu
+            showBackMenu();
+        }
+    });
+
+    // Handle click on the BACK button
+    chatBackBtn.addEventListener('click', () => {
+        // 1. Add a new bot message
+        addMessageToChat("How else can I help you?", 'bot-message');
+        
+        // 2. Show the main menu again
+        showMainMenu();
+    });
+    // --- END OF CHATBOT LOGIC ---
+
+});
