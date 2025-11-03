@@ -1,187 +1,1289 @@
-document.addEventListener('DOMContentLoaded', () => {
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharing Yatra - Smart Yatra, Shared Savings</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    // --- Theme Toggle Logic ---
-    const themeToggle = document.getElementById('theme-toggle');
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    if (savedTheme === 'dark') {
-        themeToggle.checked = true;
-    }
-    themeToggle.addEventListener('change', () => {
-        const theme = themeToggle.checked ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-    });
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <style>
+        /* --- CSS Theme Variables --- */
+        :root {
+            --primary-color: #0a4d68;
+            --primary-color-hover: #083e56;
+            --secondary-color: #16a34a; /* Green for "Save" */
+            --secondary-color-light: #d1fae5;
+            --accent-color: #ff6b6b;
 
-    // --- OFFER CALCULATOR LOGIC ---
-    const slider = document.getElementById('distance-slider');
-    const distanceDisplay = document.getElementById('distance-display');
-    const basePriceDisplay = document.getElementById('base-price-display');
-    const offerDisplay = document.getElementById('offer-display');
-    const finalPriceDisplay = document.getElementById('final-price-display');
-    const savingsDisplay = document.getElementById('savings-display');
-
-    const BASE_PRICE_PER_KM = 15; 
-
-    function calculatePrice(km) {
-        let discountPercent = 0;
-        
-        if (km >= 1 && km <= 5) {
-            discountPercent = 0.02; // 2%
-        } else if (km >= 6 && km <= 10) {
-            discountPercent = 0.05; // 5%
-        } else if (km >= 11 && km <= 20) {
-            discountPercent = 0.08; // 8%
-        } else if (km >= 21 && km <= 30) {
-            discountPercent = 0.12; // 12%
-        } else if (km > 30) {
-            discountPercent = 0.15; // 15%
+            /* Light Theme */
+            --bg-page: #f9fafb;
+            --bg-surface: #ffffff;
+            --bg-surface-inset: #f3f4f6;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.07);
         }
-        
-        const standardPrice = km * BASE_PRICE_PER_KM;
-        const discountAmount = standardPrice * discountPercent;
-        const finalPrice = standardPrice - discountAmount;
-        
-        return {
-            km: km,
-            standardPrice: standardPrice,
-            finalPrice: finalPrice,
-            discountPercent: discountPercent,
-            savings: discountAmount
-        };
-    }
 
-    function updateCalculator() {
-        // Check if all elements exist before updating
-        if (slider && distanceDisplay && basePriceDisplay && offerDisplay && finalPriceDisplay && savingsDisplay) {
-            const km = parseInt(slider.value);
-            const price = calculatePrice(km);
-            
-            distanceDisplay.textContent = `${km} km`;
-            basePriceDisplay.textContent = `₹${price.standardPrice.toFixed(0)}`;
-            offerDisplay.textContent = `${price.discountPercent * 100}% OFF`;
-            finalPriceDisplay.textContent = `₹${price.finalPrice.toFixed(0)}`;
-            savingsDisplay.textContent = `You save ₹${price.savings.toFixed(2)}!`;
+        html[data-theme="dark"] {
+            --primary-color: #1a7fa3;
+            --primary-color-hover: #2a9fc3;
+            --secondary-color: #22c55e;
+            --secondary-color-light: #064e3b;
+
+            /* Dark Theme */
+            --bg-page: #111827;
+            --bg-surface: #1f2937;
+            --bg-surface-inset: #374151;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --border-color: #374151;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
-    }
-    
-    // Only add listener if slider exists
-    if (slider) {
-        slider.addEventListener('input', updateCalculator);
-        updateCalculator(); // Run on load
-    }
+        /* --- End of Variables --- */
+
+        /* --- Basic Setup --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* --- Header / Navbar --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+        }
+
+        .logo .fa-route {
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem; /* Increased gap for new buttons */
+        }
+
+        /* --- NEW: Dropdown Styles --- */
+        .nav-button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.2s ease;
+        }
+        .nav-button:hover {
+            color: var(--text-primary);
+        }
+        .nav-button .fa-caret-down {
+            font-size: 0.8em;
+            margin-left: 4px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 100%; /* Show below the button */
+            left: 0;
+            min-width: 160px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 101; /* Above navbar's z-index */
+            margin-top: 0.5rem; /* A little space */
+            overflow: hidden; /* Ensures rounded corners on links */
+        }
+
+        .dropdown-menu a {
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .dropdown-menu a:hover {
+            background-color: var(--bg-surface-inset);
+        }
+
+        /* Show the menu on hover */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        /* --- End of Dropdown Styles --- */
 
 
-    // --- FAQ Accordion Logic ---
-    const faqItems = document.querySelectorAll('.faq-item');
-    
-    faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
-        
-        question.addEventListener('click', () => {
-            const isActive = item.classList.contains('active');
+        /* --- Theme Toggle --- */
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 28px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary-color); }
+        input:checked + .slider:before { transform: translateX(22px); }
+        .slider .fa-sun, .slider .fa-moon { position: absolute; top: 50%; transform: translateY(-50%); font-size: 14px; color: #fff; opacity: 0; transition: opacity 0.3s ease; }
+        input:not(:checked) + .slider .fa-sun { left: 6px; opacity: 1; color: #f39c12; }
+        input:checked + .slider .fa-moon { right: 6px; opacity: 1; color: #f1c40f; }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 6rem 0;
+            text-align: center;
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-slogan {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+        }
+
+        .hero h1 .highlight {
+            color: var(--primary-color);
+        }
+
+        .hero .container {
+            position: relative; /* Ensure text stays on top */
+            z-index: 1;
+        }
+
+        /* --- OFFER CALCULATOR SECTION --- */
+        .offer-section {
+            padding: 4rem 0 6rem;
+            background-color: var(--bg-surface);
+        }
+
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 4rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--bg-surface);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            padding: 3rem;
+        }
+
+        .calculator-controls {
+            padding-right: 2rem;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .calculator-controls h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .slider-label span:first-child {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .distance-display {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .slider-input {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 12px;
+            background: var(--bg-surface-inset);
+            border-radius: 6px;
+            outline: none;
+            border: 1px solid var(--border-color);
+        }
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .slider-input:hover::-webkit-slider-thumb {
+            background: var(--primary-color-hover);
+        }
+
+        .calculator-results {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .result-row .value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .result-row .strikethrough {
+            text-decoration: line-through;
+            font-size: 1rem;
+        }
+
+        .offer-badge {
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            background-color: var(--secondary-color-light);
+            color: var(--secondary-color);
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 0.5rem 0;
+        }
+
+        .final-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .final-price .value {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--secondary-color);
+        }
+
+        .savings-info {
+            text-align: center;
+            font-weight: 600;
+            color: var(--secondary-color);
+            background-color: var(--secondary-color-light);
+            padding: 0.75rem;
+            border-radius: 8px;
+        }
+
+        /* --- WHY CHOOSE US SECTION --- */
+        .why-us {
+            padding: 4rem 0;
+            background: var(--bg-page);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background-color: var(--bg-surface);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-card .icon {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            height: 50px;
+            width: 50px;
+            background-color: var(--bg-surface-inset);
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* --- TESTIMONIALS SECTION --- */
+        .testimonials {
+            padding: 4rem 0;
+            background: var(--bg-surface-inset);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background-color: var(--bg-surface);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testimonial-card .stars {
+            color: #f59e0b; /* Amber/Yellow */
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-card .text {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .testimonial-card .author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .testimonial-card .author-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* --- FAQ SECTION --- */
+        .faq-section {
+            padding: 6rem 0;
+            background-color: var(--bg-page);
+        }
+
+        .faq-container {
+            max-width: 768px;
+            margin: 3rem auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .faq-item {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active {
+            box-shadow: var(--shadow);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .faq-icon {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .faq-answer p {
+            padding: 0 1.5rem 1.5rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Adjust as needed */
+        }
+
+        /* --- FINAL CTA SECTION --- */
+        .cta-section {
+            padding: 6rem 0;
+            background-color: var(--primary-color);
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-section .btn {
+            background-color: var(--bg-surface);
+            color: var(--primary-color);
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+        }
+        .cta-section .btn:hover {
+            background-color: var(--bg-surface-inset);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background-color: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 5%;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        .footer p {
+            font-size: 0.9rem;
+        }
+
+        /* --- CHATBOT STYLES --- */
+        .chat-toggle-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.75rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transition: all 0.2s ease;
+        }
+        .chat-toggle-button:hover {
+            background-color: var(--primary-color-hover);
+            transform: scale(1.1);
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 7rem;
+            right: 2rem;
+            width: 350px;
+            max-width: 90vw;
+            height: 500px;
+            max-height: 70vh;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
             
-            faqItems.forEach(otherItem => {
-                otherItem.classList.remove('active');
+            /* Hidden by default */
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            visibility: hidden;
+            transition: all 0.3s ease-out;
+        }
+
+        .chat-window.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            visibility: visible;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .chat-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        .chat-close:hover {
+            opacity: 1;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .chat-message {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+
+        .bot-message {
+            background-color: var(--bg-surface-inset);
+            color: var(--text-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+        .bot-message p {
+            margin: 0;
+        }
+        .bot-message a {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .user-message {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-input-area {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-surface);
+        }
+
+        #chat-main-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        #chat-back-menu {
+            display: none; /* Hidden by default, JS will manage this */
+        }
+
+        .chat-menu-btn {
+            width: 100%;
+            padding: 0.75rem;
+            text-align: left;
+            background-color: var(--bg-surface-inset);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .chat-menu-btn:hover {
+            background-color: var(--border-color);
+        }
+
+        #chat-back-btn {
+            text-align: center;
+            font-weight: 600;
+        }
+        /* --- End of Chatbot Styles --- */
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 900px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 2rem;
+            }
+            .calculator-controls {
+                padding-right: 0;
+                border-right: none;
+                padding-bottom: 2rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero-slogan {
+                font-size: 1.1rem;
+            }
+            
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem; /* Added padding for column layout */
+            }
+            .nav-links {
+                width: 100%;
+                /* justify-content: space-between; <-- Removed */
+                flex-direction: column; /* Stack nav items */
+                align-items: stretch; /* Make items full-width */
+                gap: 0.5rem; /* Tighter gap for stacked items */
+            }
+
+            /* --- NEW: Mobile Dropdown Styles --- */
+            .dropdown {
+                width: 100%;
+            }
+            .nav-button {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.75rem 1rem;
+                background-color: var(--bg-surface-inset);
+                border-radius: 8px;
+            }
+            .nav-button:hover {
+                color: var(--text-primary); /* Keep hover color */
+            }
+
+            .dropdown-menu {
+                position: relative; /* Un-stick it */
+                width: 100%;
+                box-shadow: none;
+                border: none;
+                border-top: 1px solid var(--border-color);
+                border-radius: 0;
+                margin-top: 0;
+                /* Let hover still control display */
+            }
+
+            .theme-switch {
+                /* Center the theme switch */
+                margin: 0.5rem auto; 
+            }
+
+            .btn-primary {
+                /* Make book now button full width */
+                width: 100%;
+                text-align: center;
+            }
+            /* --- End of Mobile Dropdown Styles --- */
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="#" class="logo">
+            <i class="fa-solid fa-route"></i>
+            <span>SharingYatra</span>
+        </a>
+        <div class="nav-links">
+            
+            <div class="dropdown">
+                <button class="nav-button dropdown-toggle">
+                    Login <i class="fa-solid fa-caret-down"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="http://localhost:5000/login.html">Customer</a>
+                    <a href="https://partnersagency.vercel.app/">Agency</a>
+                    <a href="https://driversharing.vercel.app/">Driver</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="nav-button dropdown-toggle">
+                    Sign Up <i class="fa-solid fa-caret-down"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <a href="http://localhost:5000/customerSignup.html">Customer</a>
+                    <a href="http://partnersagency.vercel.app/signup">Agency</a>
+                </div>
+            </div>
+            <label class="theme-switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider">
+                    <i class="fa-solid fa-sun"></i>
+                    <i class="fa-solid fa-moon"></i>
+                </span>
+            </label>
+            <a href="http://localhost:5000/login.html" class="btn btn-primary">Book Now</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Connect your Yatra in the <span class="highlight">way of sharing.</span></h1>
+                <p class="hero-slogan">Why pay more? With Sharing Yatra, the farther you go, the more you save.
+                </p>
+                <a href="#calculator" class="btn btn-primary" style="background-color: var(--secondary-color); padding: 1rem 2.5rem; font-size: 1.1rem;">
+                    Calculate Your Savings
+                </a>
+            </div>
+        </section>
+
+        <section id="calculator" class="offer-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>See Your Offer</h2>
+                    <p>Select your journey distance to see your exclusive discount.</p>
+                </div>
+                <div class="calculator-container">
+                    <div class="calculator-controls">
+                        <h3>Estimate Your Fare</h3>
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>Select Journey Distance</span>
+                                <span class="distance-display" id="distance-display">50 km</span>
+                            </div>
+                            <input type="range" id="distance-slider" class="slider-input" min="1" max="100" value="50">
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                            Our standard rate is ₹15/km. Your discount is automatically applied based on distance.
+                        </p>
+                    </div>
+                    <div class="calculator-results">
+                        <div class="result-row">
+                            <span>Standard Price</span>
+                            <span class="value strikethrough" id="base-price-display">₹750</span>
+                        </div>
+                        <div class="result-row">
+                            <span>Offer Applied</span>
+                            <span class="value offer-badge" id="offer-display">15% OFF</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="result-row final-price">
+                            <span>Your Price</span>
+                            <span class="value" id="final-price-display">₹638</span>
+                        </div>
+                        <div class="savings-info" id="savings-display">
+                            You save ₹112.50!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="why-us">
+            <div class="container">
+                <div class="section-header">
+                    <h2>A Smarter Way to Travel</h2>
+                    <p>We built Sharing Yatra to be simple, fair, and reliable.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon"><i class="fa-solid fa-percent"></i></div>
+                        <h3>Fair, Transparent Pricing</h3>
+                        <p>No surge. No surprises. Just a standard rate with distance-based discounts you can see *before* you book.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3>Safety & Reliability</h3>
+                        <p>All our driver-partners are vetted and trained. With 24/7 support, you can relax and enjoy your yatra.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                        <h3>Shared Savings Model</h3>
+                        <p>Our "sharing" model means we share the benefits of long-distance travel with you, the customer.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Don't Just Take Our Word for It</h2>
+                    <p>See what our happy travelers are saying about their yatra.</p>
+                </div>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text">"I couldn't believe the price for my trip to Pune. The calculator was 100% accurate and I saved over 15%. This is my new go-to app for outstation travel."</p>
+                        <div class="author">
+                            <span class="author-name">Priya S.</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text">"Finally, an app that doesn't use confusing surge pricing. The 'offer' based on distance is genius. The car was clean and the driver was very professional."</p>
+                        <div class="author">
+                            <span class="author-name">Rohan Kulkarni</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Frequently Asked Questions</h2>
+                </div>
+                
+                <div class="faq-container">
+                    
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>How is the final price calculated?</span>
+                            <i class="fa-solid fa-plus faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We start with a standard base rate of ₹15 per kilometer. Then, we automatically apply your distance-based discount (from 2% to 15%) to get your final, low price. What you see is what you pay.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Is this a ride-sharing (pooling) service?</span>
+                            <i class="fa-solid fa-plus faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>No, we offer private, point-to-point rides just for you. Our name "Sharing Yatra" refers to our model of *sharing the savings* with you. The more you travel, the more we share!</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What if I need to travel more than 100 km?</span>
+                            <i class="fa-solid fa-plus faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Our 15% discount is our maximum offer and applies to all rides over 30 km, including those over 100 km. You will always get our best possible rate. The calculator is for estimation, but the 15% off will apply to your entire long journey.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Are your drivers verified?</span>
+                            <i class="fa-solid fa-plus faq-icon"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Absolutely. Your safety is our top priority. All driver-partners undergo a strict verification process, including background checks and vehicle inspections, before they can drive on our platform.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2>Ready to Start Your Yatra?</h2>
+                <p>Get the best-in-class rates for your next journey, big or small.</p>
+                <a href="http://localhost:5000/login.html" class="btn">Book Your Ride Now</a>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <p>&copy; 2025 SharingYatra. All rights reserved.</p>
+        <p>Connect your Yatra in the way of sharing.</p>
+    </footer>
+
+    <button class="chat-toggle-button" id="chat-toggle">
+        <i class="fa-solid fa-comments"></i>
+    </button>
+
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+            <span>Sharing Yatra Support</span>
+            <button class="chat-close" id="chat-close">&times;</button>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="chat-message bot-message">
+                <p>Hi! How can I help you today?</p>
+            </div>
+        </div>
+        <div class="chat-input-area" id="chat-input-area">
+            <div id="chat-main-menu">
+                <button class="chat-menu-btn" data-link="/login">Customer Login</button>
+                <button class="chat-menu-btn" data-link="/partner-register">Agency/Partner Register</button>
+                <button class="chat-menu-btn" data-link="/#calculator">Offer Slab</button>
+                <button class="chat-menu-btn" data-link="/help/login">How to Login</button>
+                <button class="chat-menu-btn" data-link="/forget-password">Forget Password</button>
+            </div>
+            <div id="chat-back-menu">
+                <button class="chat-menu-btn" id="chat-back-btn">&larr; Back to Menu</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Theme Toggle Logic ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            if (savedTheme === 'dark') {
+                themeToggle.checked = true;
+            }
+            themeToggle.addEventListener('change', () => {
+                const theme = themeToggle.checked ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
             });
-            
-            if (!isActive) {
-                item.classList.add('active');
+
+
+            // --- OFFER CALCULATOR LOGIC ---
+            const slider = document.getElementById('distance-slider');
+            const distanceDisplay = document.getElementById('distance-display');
+            const basePriceDisplay = document.getElementById('base-price-display');
+            const offerDisplay = document.getElementById('offer-display');
+            const finalPriceDisplay = document.getElementById('final-price-display');
+            const savingsDisplay = document.getElementById('savings-display');
+
+            const BASE_PRICE_PER_KM = 15; 
+
+            function calculatePrice(km) {
+                let discountPercent = 0;
+                
+                if (km >= 1 && km <= 5) {
+                    discountPercent = 0.02; // 2%
+                } else if (km >= 6 && km <= 10) {
+                    discountPercent = 0.05; // 5%
+                } else if (km >= 11 && km <= 20) {
+                    discountPercent = 0.08; // 8%
+                } else if (km >= 21 && km <= 30) {
+                    discountPercent = 0.12; // 12%
+                } else if (km > 30) {
+                    discountPercent = 0.15; // 15%
+                }
+                
+                const standardPrice = km * BASE_PRICE_PER_KM;
+                const discountAmount = standardPrice * discountPercent;
+                const finalPrice = standardPrice - discountAmount;
+                
+                return {
+                    km: km,
+                    standardPrice: standardPrice,
+                    finalPrice: finalPrice,
+                    discountPercent: discountPercent,
+                    savings: discountAmount
+                };
             }
+
+            function updateCalculator() {
+                // Check if all elements exist before updating
+                if (slider && distanceDisplay && basePriceDisplay && offerDisplay && finalPriceDisplay && savingsDisplay) {
+                    const km = parseInt(slider.value);
+                    const price = calculatePrice(km);
+                    
+                    distanceDisplay.textContent = `${km} km`;
+                    basePriceDisplay.textContent = `₹${price.standardPrice.toFixed(0)}`;
+                    offerDisplay.textContent = `${price.discountPercent * 100}% OFF`;
+                    finalPriceDisplay.textContent = `₹${price.finalPrice.toFixed(0)}`;
+                    savingsDisplay.textContent = `You save ₹${price.savings.toFixed(2)}!`;
+                }
+            }
+            
+            // Only add listener if slider exists
+            if (slider) {
+                slider.addEventListener('input', updateCalculator);
+                updateCalculator(); // Run on load
+            }
+
+
+            // --- FAQ Accordion Logic ---
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+                    
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+
+            // --- NEW CHATBOT LOGIC ---
+            const chatToggle = document.getElementById('chat-toggle');
+            const chatWindow = document.getElementById('chat-window');
+            const chatClose = document.getElementById('chat-close');
+            const chatMessages = document.getElementById('chat-messages');
+            const chatMainMenu = document.getElementById('chat-main-menu');
+            const chatBackMenu = document.getElementById('chat-back-menu');
+            const chatBackBtn = document.getElementById('chat-back-btn');
+
+            // --- Helper Functions ---
+            
+            function addMessageToChat(content, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('chat-message', type);
+                
+                if (type === 'bot-message') {
+                    messageDiv.innerHTML = `<p>${content}</p>`;
+                } else {
+                    messageDiv.textContent = content;
+                }
+                
+                chatMessages.appendChild(messageDiv);
+                scrollToBottom();
+            }
+
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function showMainMenu() {
+                chatMainMenu.style.display = 'flex';
+                chatBackMenu.style.display = 'none';
+            }
+
+            function showBackMenu() {
+                chatMainMenu.style.display = 'none';
+                chatBackMenu.style.display = 'block';
+            }
+
+            // --- Event Listeners ---
+
+            // Toggle chat window
+            if (chatToggle) {
+                chatToggle.addEventListener('click', () => {
+                    chatWindow.classList.toggle('active');
+                    if (chatWindow.classList.contains('active')) {
+                        showMainMenu(); // Always show main menu on open
+                        scrollToBottom();
+                    }
+                });
+            }
+
+            // Close chat window
+            if (chatClose) {
+                chatClose.addEventListener('click', () => {
+                    chatWindow.classList.remove('active');
+                });
+            }
+
+            // Handle clicks on the MAIN MENU
+            if (chatMainMenu) {
+                chatMainMenu.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('chat-menu-btn')) {
+                        const button = e.target;
+                        const link = button.dataset.link;
+                        const text = button.textContent;
+                        
+                        // 1. Add user message
+                        addMessageToChat(text, 'user-message');
+
+                        // 2. Prepare and add bot reply
+                        let botHtml = '';
+                        if (link === '/#calculator') {
+                            botHtml = `Sure! You can see our offers on the <a href="${link}" onclick="document.getElementById('chat-window').classList.remove('active')">Offer Calculator</a> right on this page.`;
+                        } else {
+                            botHtml = `Here is the link for <a href="${link}" target="_blank">${text}</a>.`;
+                        }
+                        
+                        setTimeout(() => {
+                            addMessageToChat(botHtml, 'bot-message');
+                        }, 500);
+                        
+                        // 3. Show the "Back" menu
+                        showBackMenu();
+                    }
+                });
+            }
+
+            // Handle click on the BACK button
+            if (chatBackBtn) {
+                chatBackBtn.addEventListener('click', () => {
+                    // 1. Add a new bot message
+                    addMessageToChat("How else can I help you?", 'bot-message');
+                    
+                    // 2. Show the main menu again
+                    showMainMenu();
+                });
+            }
+            // --- END OF CHATBOT LOGIC ---
+
         });
-    });
+    </script>
 
-    // --- *** NEW CHATBOT LOGIC *** ---
-    const chatToggle = document.getElementById('chat-toggle');
-    const chatWindow = document.getElementById('chat-window');
-    const chatClose = document.getElementById('chat-close');
-    const chatMessages = document.getElementById('chat-messages');
-    const chatMainMenu = document.getElementById('chat-main-menu');
-    const chatBackMenu = document.getElementById('chat-back-menu');
-    const chatBackBtn = document.getElementById('chat-back-btn');
-
-    // --- Helper Functions ---
-    
-    function addMessageToChat(content, type) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('chat-message', type);
-        
-        if (type === 'bot-message') {
-            messageDiv.innerHTML = `<p>${content}</p>`;
-        } else {
-            messageDiv.textContent = content;
-        }
-        
-        chatMessages.appendChild(messageDiv);
-        scrollToBottom();
-    }
-
-    function scrollToBottom() {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function showMainMenu() {
-        chatMainMenu.style.display = 'flex';
-        chatBackMenu.style.display = 'none';
-    }
-
-    function showBackMenu() {
-        chatMainMenu.style.display = 'none';
-        chatBackMenu.style.display = 'block';
-    }
-
-    // --- Event Listeners ---
-
-    // Toggle chat window
-    chatToggle.addEventListener('click', () => {
-        chatWindow.classList.toggle('active');
-        if (chatWindow.classList.contains('active')) {
-            showMainMenu(); // Always show main menu on open
-            scrollToBottom();
-        }
-    });
-
-    // Close chat window
-    chatClose.addEventListener('click', () => {
-        chatWindow.classList.remove('active');
-    });
-
-    // Handle clicks on the MAIN MENU
-    chatMainMenu.addEventListener('click', (e) => {
-        if (e.target.classList.contains('chat-menu-btn')) {
-            const button = e.target;
-            const link = button.dataset.link;
-            const text = button.textContent;
-            
-            // 1. Add user message
-            addMessageToChat(text, 'user-message');
-
-            // 2. Prepare and add bot reply
-            let botHtml = '';
-            if (link === '/#calculator') {
-                botHtml = `Sure! You can see our offers on the <a href="${link}" onclick="document.getElementById('chat-window').classList.remove('active')">Offer Calculator</a> right on this page.`;
-            } else {
-                botHtml = `Here is the link for <a href="${link}" target="_blank">${text}</a>.`;
-            }
-            
-            setTimeout(() => {
-                addMessageToChat(botHtml, 'bot-message');
-            }, 500);
-            
-            // 3. Show the "Back" menu
-            showBackMenu();
-        }
-    });
-
-    // Handle click on the BACK button
-    chatBackBtn.addEventListener('click', () => {
-        // 1. Add a new bot message
-        addMessageToChat("How else can I help you?", 'bot-message');
-        
-        // 2. Show the main menu again
-        showMainMenu();
-    });
-    // --- END OF CHATBOT LOGIC ---
-
-});
+</body>
+</html>
