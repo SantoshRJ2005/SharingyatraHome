@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sharing Yatra - Smart Yatra, Shared Savings</title>
+    <title>Sharing Yatra - Connect Your Yatra</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
@@ -409,19 +410,99 @@
             border-radius: 8px;
         }
 
-        /* --- WHY CHOOSE US SECTION --- */
-        .why-us {
+        /* --- NEW CUSTOMER WORKFLOW SECTION --- */
+        .customer-workflow {
             padding: 4rem 0;
             background: var(--bg-page);
         }
-
-        .features-grid {
+        .workflow-timeline {
+            position: relative;
+            max-width: 700px;
+            margin: 2rem auto 0;
+            padding-left: 2rem; /* Space for the timeline vertical line */
+            border-left: 3px solid var(--primary-color);
+        }
+        .workflow-step {
+            position: relative;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        .workflow-step:last-child {
+            margin-bottom: 0;
+        }
+        .workflow-icon {
+            position: absolute;
+            left: -46px; /* (Icon width / 2) + padding */
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #ffffff;
+            background: var(--primary-color);
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid var(--bg-page);
+        }
+        .workflow-content h3 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        .workflow-content h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .workflow-content p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        .workflow-split {
+            /* This div holds the two cards */
+            position: relative;
+            padding-bottom: 2.5rem;
+        }
+        .workflow-split-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .workflow-split-grid .workflow-step {
+            margin-bottom: 0;
+        }
+        .workflow-split-grid .workflow-path {
+            position: relative;
+        }
+        /* Adjust icons for split path */
+        .workflow-split-grid .workflow-icon {
+            left: 50%;
+            top: -40px; /* Position icon above the card */
+            transform: translateX(-50%);
+        }
+        .workflow-split-grid .workflow-step {
+            margin-top: 30px; /* Give space for the icon */
+        }
+        /* --- END NEW WORKFLOW CSS --- */
+
+
+        /* --- KEY FEATURES SECTION --- */
+        .key-features {
+            padding: 4rem 0;
+            background: var(--bg-surface-inset);
+        }
+        .features-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 2rem;
             margin-top: 3rem;
         }
-
         .feature-card {
             background-color: var(--bg-surface);
             padding: 2rem;
@@ -429,12 +510,13 @@
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
             transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
         }
         .feature-card:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
         }
-
         .feature-card .icon {
             font-size: 1.75rem;
             color: var(--primary-color);
@@ -447,159 +529,16 @@
             align-items: center;
             justify-content: center;
         }
-
         .feature-card h3 {
             font-size: 1.25rem;
             margin-bottom: 0.5rem;
         }
-
         .feature-card p {
             color: var(--text-secondary);
             font-size: 0.95rem;
+            flex-grow: 1; /* Makes p tags take up space */
         }
-
-        /* --- TESTIMONIALS SECTION --- */
-        .testimonials {
-            padding: 4rem 0;
-            background: var(--bg-surface-inset);
-        }
-
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .testimonial-card {
-            background-color: var(--bg-surface);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .testimonial-card .stars {
-            color: #f59e0b; /* Amber/Yellow */
-            margin-bottom: 1rem;
-        }
-
-        .testimonial-card .text {
-            font-size: 1.1rem;
-            font-style: italic;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
-        }
-
-        .testimonial-card .author {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .testimonial-card .author-name {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        /* --- FAQ SECTION --- */
-        .faq-section {
-            padding: 6rem 0;
-            background-color: var(--bg-page);
-        }
-
-        .faq-container {
-            max-width: 768px;
-            margin: 3rem auto 0;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .faq-item {
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .faq-item.active {
-            box-shadow: var(--shadow);
-        }
-
-        .faq-question {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 1.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-align: left;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            cursor: pointer;
-        }
-
-        .faq-icon {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            transition: transform 0.3s ease;
-        }
-
-        .faq-item.active .faq-icon {
-            transform: rotate(45deg);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .faq-answer p {
-            padding: 0 1.5rem 1.5rem;
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-
-        .faq-item.active .faq-answer {
-            max-height: 200px; /* Adjust as needed */
-        }
-
-        /* --- FINAL CTA SECTION --- */
-        .cta-section {
-            padding: 6rem 0;
-            background-color: var(--primary-color);
-            text-align: center;
-        }
-
-        .cta-section h2 {
-            font-size: 2.5rem;
-            color: #ffffff;
-            margin-bottom: 1rem;
-        }
-
-        .cta-section p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 2.5rem;
-        }
-
-        .cta-section .btn {
-            background-color: var(--bg-surface);
-            color: var(--primary-color);
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-        }
-        .cta-section .btn:hover {
-            background-color: var(--bg-surface-inset);
-        }
+        /* --- End Key Features --- */
 
         /* --- Footer --- */
         .footer {
@@ -612,155 +551,7 @@
         .footer p {
             font-size: 0.9rem;
         }
-
-        /* --- CHATBOT STYLES --- */
-        .chat-toggle-button {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 60px;
-            height: 60px;
-            background-color: var(--primary-color);
-            color: #ffffff;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.75rem;
-            cursor: pointer;
-            box-shadow: var(--shadow-lg);
-            z-index: 1000;
-            transition: all 0.2s ease;
-        }
-        .chat-toggle-button:hover {
-            background-color: var(--primary-color-hover);
-            transform: scale(1.1);
-        }
-
-        .chat-window {
-            position: fixed;
-            bottom: 7rem;
-            right: 2rem;
-            width: 350px;
-            max-width: 90vw;
-            height: 500px;
-            max-height: 70vh;
-            background-color: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: var(--shadow-lg);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            
-            /* Hidden by default */
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
-            visibility: hidden;
-            transition: all 0.3s ease-out;
-        }
-
-        .chat-window.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            visibility: visible;
-        }
-
-        .chat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background-color: var(--primary-color);
-            color: #ffffff;
-            font-weight: 600;
-        }
-        .chat-close {
-            background: none;
-            border: none;
-            color: #ffffff;
-            font-size: 1.5rem;
-            cursor: pointer;
-            opacity: 0.8;
-        }
-        .chat-close:hover {
-            opacity: 1;
-        }
-
-        .chat-messages {
-            flex-grow: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .chat-message {
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            max-width: 80%;
-            line-height: 1.4;
-        }
-
-        .bot-message {
-            background-color: var(--bg-surface-inset);
-            color: var(--text-primary);
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
-        }
-        .bot-message p {
-            margin: 0;
-        }
-        .bot-message a {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .user-message {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-
-        .chat-input-area {
-            padding: 1rem;
-            border-top: 1px solid var(--border-color);
-            background-color: var(--bg-surface);
-        }
-
-        #chat-main-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        #chat-back-menu {
-            display: none; /* Hidden by default, JS will manage this */
-        }
-
-        .chat-menu-btn {
-            width: 100%;
-            padding: 0.75rem;
-            text-align: left;
-            background-color: var(--bg-surface-inset);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.2s;
-        }
-        .chat-menu-btn:hover {
-            background-color: var(--border-color);
-        }
-
-        #chat-back-btn {
-            text-align: center;
-            font-weight: 600;
-        }
-        /* --- End of Chatbot Styles --- */
-
+        
         /* --- Mobile Responsiveness --- */
         @media (max-width: 900px) {
             .calculator-container {
@@ -774,10 +565,7 @@
                 padding-bottom: 2rem;
                 border-bottom: 1px solid var(--border-color);
             }
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            .testimonial-grid {
+            .features-grid-2 {
                 grid-template-columns: 1fr;
             }
         }
@@ -854,17 +642,37 @@
                 display: block; 
             }
 
-            /* --- MODIFIED --- */
             .theme-switch {
-                /* Center the theme switch */
                 margin: 0.5rem auto; 
             }
-            /* --- END MODIFIED --- */
 
             .btn-primary {
                 width: 100%;
                 text-align: center;
                 padding: 0.75rem 1rem; /* Match button padding */
+            }
+
+            /* --- Responsive adjustments for workflow --- */
+            .workflow-timeline {
+                padding-left: 1rem;
+                margin-left: 25px; /* Give space for icon */
+            }
+            .workflow-icon {
+                left: -40px;
+                height: 40px;
+                width: 40px;
+                font-size: 1.2rem;
+            }
+            .workflow-split-grid {
+                grid-template-columns: 1fr;
+            }
+            .workflow-split-grid .workflow-icon {
+                left: -40px; /* Align with other icons */
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            .workflow-split-grid .workflow-step {
+                margin-top: 0;
             }
         }
     </style>
@@ -911,18 +719,20 @@
                     <i class="fa-solid fa-moon"></i>
                 </span>
             </label>
-            <a href="https://sharing-yatra-college.vercel.app/login.html" class="btn btn-primary">Book Now</a>
+            <a href="https://sharing-yatra-college.vercel.app/login.html" class="btn btn-primary">Find a Ride</a>
         </div>
     </header>
 
     <main>
         <section class="hero">
             <div class="container">
-                <h1>Connect your Yatra in the <span class="highlight">way of sharing.</span></h1>
-                <p class="hero-slogan">Why pay more? With Sharing Yatra, the farther you go, the more you save.
+                <h1>A Shared-Economy for Travel.</h1>
+                <p class="hero-slogan">
+                    Lower costs for customers, higher revenue for agencies. 
+                    We connect travelers on similar routes to share a single cab.
                 </p>
-                <a href="#calculator" class="btn btn-primary" style="background-color: var(--secondary-color); padding: 1rem 2.5rem; font-size: 1.1rem;">
-                    Calculate Your Savings
+                <a href="#customer-workflow" class="btn btn-primary" style="background-color: var(--secondary-color); padding: 1rem 2.5rem; font-size: 1.1rem;">
+                    See How It Works
                 </a>
             </div>
         </section>
@@ -930,8 +740,8 @@
         <section id="calculator" class="offer-section">
             <div class="container">
                 <div class="section-header">
-                    <h2>See Your Offer</h2>
-                    <p>Select your journey distance to see your exclusive discount.</p>
+                    <h2>Estimate Your Standard Fare</h2>
+                    <p>Estimate the standard fare for your trip. The final fare is set by the agency based on this and other factors.</p>
                 </div>
                 <div class="calculator-container">
                     <div class="calculator-controls">
@@ -944,7 +754,7 @@
                             <input type="range" id="distance-slider" class="slider-input" min="1" max="100" value="50">
                         </div>
                         <p style="font-size: 0.9rem; color: var(--text-secondary);">
-                            Our standard rate is ₹15/km. Your discount is automatically applied based on distance.
+                            Our standard rate is ₹15/km. Discounts are auto-applied for estimation.
                         </p>
                     </div>
                     <div class="calculator-results">
@@ -953,142 +763,106 @@
                             <span class="value strikethrough" id="base-price-display">₹750</span>
                         </div>
                         <div class="result-row">
-                            <span>Offer Applied</span>
+                            <span>Est. Discount</span>
                             <span class="value offer-badge" id="offer-display">15% OFF</span>
                         </div>
                         <div class="divider"></div>
                         <div class="result-row final-price">
-                            <span>Your Price</span>
+                            <span>Your Est. Price</span>
                             <span class="value" id="final-price-display">₹638</span>
                         </div>
                         <div class="savings-info" id="savings-display">
-                            You save ₹112.50!
+                            You save approx. ₹112.50!
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         
-        <section class="why-us">
+        <section id="customer-workflow" class="customer-workflow">
             <div class="container">
                 <div class="section-header">
-                    <h2>A Smarter Way to Travel</h2>
-                    <p>We built Sharing Yatra to be simple, fair, and reliable.</p>
+                    <h2>Your Journey with Sharing Yatra</h2>
+                    <p>A simple, step-by-step guide to booking your ride and saving money.</p>
                 </div>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="icon"><i class="fa-solid fa-percent"></i></div>
-                        <h3>Fair, Transparent Pricing</h3>
-                        <p>No surge. No surprises. Just a standard rate with distance-based discounts you can see *before* you book.</p>
+                <div class="workflow-timeline">
+                    
+                    <div class="workflow-step">
+                        <div class="workflow-icon"><i class="fa-solid fa-search"></i></div>
+                        <div class="workflow-content">
+                            <h3>1. Search for Your Ride</h3>
+                            <p>Log in, enter your route, and choose your booking mode: 'Express Connect' for now or 'Schedule Booking' for later.</p>
+                        </div>
                     </div>
-                    <div class="feature-card">
-                        <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
-                        <h3>Safety & Reliability</h3>
-                        <p>All our driver-partners are vetted and trained. With 24/7 support, you can relax and enjoy your yatra.</p>
+    
+                    <div class="workflow-step">
+                        <div class="workflow-icon"><i class="fa-solid fa-list-check"></i></div>
+                        <div class="workflow-content">
+                            <h3>2. See Your Options</h3>
+                            <p>The system shows you two choices: available agencies to book a new <strong>'Main Ride'</strong> OR existing <strong>'Shared Rides'</strong> you can join at a discount.</p>
+                        </div>
                     </div>
-                    <div class="feature-card">
-                        <div class="icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                        <h3>Shared Savings Model</h3>
-                        <p>Our "sharing" model means we share the benefits of long-distance travel with you, the customer.</p>
+    
+                    <div class="workflow-split">
+                        <div class="workflow-split-grid">
+                            <div class="workflow-path">
+                                <div class="workflow-step">
+                                    <div class="workflow-icon"><i class="fa-solid fa-paper-plane"></i></div>
+                                    <div class="workflow-content">
+                                        <h4>Option 1: Book 'Main Ride'</h4>
+                                        <p>You select an agency. Your ride status becomes <strong>'Pending'</strong> while the agency manually approves it.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="workflow-path">
+                                <div class="workflow-step">
+                                    <div class="workflow-icon"><i class="fa-solid fa-bolt"></i></div>
+                                    <div class="workflow-content">
+                                        <h4>Option 2: Join 'Shared Ride'</h4>
+                                        <p>You select an existing ride. The system checks for seats and... <strong>it's Auto-Approved!</strong> Your status is instantly 'Approved'.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+    
+                    <div class="workflow-step">
+                        <div class="workflow-icon"><i class="fa-solid fa-check-circle"></i></div>
+                        <div class="workflow-content">
+                            <h3>3. Ride Confirmed!</h3>
+                            <p>Once 'Approved' (either way), your ride is confirmed. All you have to do is show up at the scheduled time.</p>
+                        </div>
+                    </div>
+    
+                    <div class="workflow-step">
+                        <div class="workflow-icon"><i class="fa-solid fa-star"></i></div>
+                        <div class="workflow-content">
+                            <h3>4. Complete & Favourite</h3>
+                            <p>After your ride is 'Completed', you can view it in your history and add the agency or driver to your 'Favourites' to re-book with them later.</p>
+                        </div>
+                    </div>
+    
                 </div>
             </div>
         </section>
-
-        <section class="testimonials">
+        <section class="key-features">
             <div class="container">
                 <div class="section-header">
-                    <h2>Don't Just Take Our Word for It</h2>
-                    <p>See what our happy travelers are saying about their yatra.</p>
+                    <h2>Key Project Features</h2>
+                    <p>Our platform is built on a unique, trust-based model from the ground up.</p>
                 </div>
-                <div class="testimonial-grid">
-                    <div class="testimonial-card">
-                        <div class="stars">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="text">"I couldn't believe the price for my trip to Pune. The calculator was 100% accurate and I saved over 15%. This is my new go-to app for outstation travel."</p>
-                        <div class="author">
-                            <span class="author-name">Priya S.</span>
-                        </div>
+                <div class="features-grid-2">
+                    <div class="feature-card">
+                        <div class="icon"><i class="fa-solid fa-clock"></i></div>
+                        <h3>Dual Booking Modes</h3>
+                        <p>Choose **Express Connect** for instant travel or **Schedule Booking** for planned journeys. This flexibility allows you to travel how you want, when you want.</p>
                     </div>
-                    <div class="testimonial-card">
-                        <div class="stars">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <p class="text">"Finally, an app that doesn't use confusing surge pricing. The 'offer' based on distance is genius. The car was clean and the driver was very professional."</p>
-                        <div class="author">
-                            <span class="author-name">Rohan Kulkarni</span>
-                        </div>
+                    <div class="feature-card">
+                        <div class="icon"><i class="fa-solid fa-handshake"></i></div>
+                        <h3>Trust-Based Ecosystem</h3>
+                        <p>Had a great experience? Our platform allows customers to 'favourite' and re-book with preferred agencies or drivers, fostering a community built on trust and reliability.</p>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="faq-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Frequently Asked Questions</h2>
-                </div>
-                
-                <div class="faq-container">
-                    
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>How is the final price calculated?</span>
-                            <i class="fa-solid fa-plus faq-icon"></i>
-                        </button>
-                        <div class="faq-answer">
-                            <p>We start with a standard base rate of ₹15 per kilometer. Then, we automatically apply your distance-based discount (from 2% to 15%) to get your final, low price. What you see is what you pay.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>Is this a ride-sharing (pooling) service?</span>
-                            <i class="fa-solid fa-plus faq-icon"></i>
-                        </button>
-                        <div class="faq-answer">
-                            <p>No, we offer private, point-to-point rides just for you. Our name "Sharing Yatra" refers to our model of *sharing the savings* with you. The more you travel, the more we share!</p>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>What if I need to travel more than 100 km?</span>
-                            <i class="fa-solid fa-plus faq-icon"></i>
-                        </button>
-                        <div class="faq-answer">
-                            <p>Our 15% discount is our maximum offer and applies to all rides over 30 km, including those over 100 km. You will always get our best possible rate. The calculator is for estimation, but the 15% off will apply to your entire long journey.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <button class="faq-question">
-                            <span>Are your drivers verified?</span>
-                            <i class="fa-solid fa-plus faq-icon"></i>
-                        </button>
-                        <div class="faq-answer">
-                            <p>Absolutely. Your safety is our top priority. All driver-partners undergo a strict verification process, including background checks and vehicle inspections, before they can drive on our platform.</p>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </section>
-
-        <section class="cta-section">
-            <div class="container">
-                <h2>Ready to Start Your Yatra?</h2>
-                <p>Get the best-in-class rates for your next journey, big or small.</p>
-                <a href="https://sharing-yatra-college.vercel.app/login.html" class="btn">Book Your Ride Now</a>
             </div>
         </section>
     </main>
@@ -1097,34 +871,6 @@
         <p>&copy; 2025 SharingYatra. All rights reserved.</p>
         <p>Connect your Yatra in the way of sharing.</p>
     </footer>
-
-    <button class="chat-toggle-button" id="chat-toggle">
-        <i class="fa-solid fa-comments"></i>
-    </button>
-
-    <div class="chat-window" id="chat-window">
-        <div class="chat-header">
-            <span>Sharing Yatra Support</span>
-            <button class="chat-close" id="chat-close">&times;</button>
-        </div>
-        <div class="chat-messages" id="chat-messages">
-            <div class="chat-message bot-message">
-                <p>Hi! How can I help you today?</p>
-            </div>
-        </div>
-        <div class="chat-input-area" id="chat-input-area">
-            <div id="chat-main-menu">
-                <button class="chat-menu-btn" data-link="https://sharing-yatra-college.vercel.app/login.html">Customer Login</button>
-                <button class="chat-menu-btn" data-link="https://agecnysharing.vercel.app/">Agency/Partner Register</button>
-                <button class="chat-menu-btn" data-link="/#calculator">Offer Slab</button>
-                <button class="chat-menu-btn" data-link="https://sharing-yatra-college.vercel.app/login.html">How to Login</button>
-                <button class="chat-menu-btn" data-link="https://sharing-yatra-college.vercel.app/forgot-password.html">Forget Password</button>
-            </div>
-            <div id="chat-back-menu">
-                <button class="chat-menu-btn" id="chat-back-btn">&larr; Back to Menu</button>
-            </div>
-        </div>
-    </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -1216,12 +962,12 @@
                 if (slider && distanceDisplay && basePriceDisplay && offerDisplay && finalPriceDisplay && savingsDisplay) {
                     const km = parseInt(slider.value);
                     const price = calculatePrice(km);
-                    
+
                     distanceDisplay.textContent = `${km} km`;
                     basePriceDisplay.textContent = `₹${price.standardPrice.toFixed(0)}`;
-                    offerDisplay.textContent = `${price.discountPercent * 100}% OFF`;
+                    offerDisplay.textContent = `${(price.discountPercent * 100).toFixed(0)}% OFF`;
                     finalPriceDisplay.textContent = `₹${price.finalPrice.toFixed(0)}`;
-                    savingsDisplay.textContent = `You save ₹${price.savings.toFixed(2)}!`;
+                    savingsDisplay.textContent = `You save approx. ₹${price.savings.toFixed(2)}!`;
                 }
             }
             
@@ -1230,127 +976,6 @@
                 slider.addEventListener('input', updateCalculator);
                 updateCalculator(); // Run on load
             }
-
-
-            // --- FAQ Accordion Logic ---
-            const faqItems = document.querySelectorAll('.faq-item');
-            
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question');
-                
-                question.addEventListener('click', () => {
-                    const isActive = item.classList.contains('active');
-                    
-                    faqItems.forEach(otherItem => {
-                        otherItem.classList.remove('active');
-                    });
-                    
-                    if (!isActive) {
-                        item.classList.add('active');
-                    }
-                });
-            });
-
-            // --- CHATBOT LOGIC ---
-            const chatToggle = document.getElementById('chat-toggle');
-            const chatWindow = document.getElementById('chat-window');
-            const chatClose = document.getElementById('chat-close');
-            const chatMessages = document.getElementById('chat-messages');
-            const chatMainMenu = document.getElementById('chat-main-menu');
-            const chatBackMenu = document.getElementById('chat-back-menu');
-            const chatBackBtn = document.getElementById('chat-back-btn');
-
-            // --- Helper Functions ---
-            
-            function addMessageToChat(content, type) {
-                const messageDiv = document.createElement('div');
-                messageDiv.classList.add('chat-message', type);
-                
-                if (type === 'bot-message') {
-                    messageDiv.innerHTML = `<p>${content}</p>`;
-                } else {
-                    messageDiv.textContent = content;
-                }
-                
-                chatMessages.appendChild(messageDiv);
-                scrollToBottom();
-            }
-
-            function scrollToBottom() {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function showMainMenu() {
-                chatMainMenu.style.display = 'flex';
-                chatBackMenu.style.display = 'none';
-            }
-
-            function showBackMenu() {
-                chatMainMenu.style.display = 'none';
-                chatBackMenu.style.display = 'block';
-            }
-
-            // --- Event Listeners ---
-
-            // Toggle chat window
-            if (chatToggle) {
-                chatToggle.addEventListener('click', () => {
-                    chatWindow.classList.toggle('active');
-                    if (chatWindow.classList.contains('active')) {
-                        showMainMenu(); // Always show main menu on open
-                        scrollToBottom();
-                    }
-                });
-            }
-
-            // Close chat window
-            if (chatClose) {
-                chatClose.addEventListener('click', () => {
-                    chatWindow.classList.remove('active');
-                });
-            }
-
-            // Handle clicks on the MAIN MENU
-            if (chatMainMenu) {
-                chatMainMenu.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('chat-menu-btn')) {
-                        const button = e.target;
-                        const link = button.dataset.link;
-                        const text = button.textContent;
-                        
-                        // 1. Add user message
-                        addMessageToChat(text, 'user-message');
-
-                        // 2. Prepare and add bot reply
-                        let botHtml = '';
-                        if (link === '/#calculator') {
-                            botHtml = `Sure! You can see our offers on the <a href="${link}" onclick="document.getElementById('chat-window').classList.remove('active')">Offer Calculator</a> right on this page.`;
-                        } else {
-                            botHtml = `Here is the link for <a href="${link}" target="_blank">${text}</a>.`;
-                        }
-                        
-                        setTimeout(() => {
-                            addMessageToChat(botHtml, 'bot-message');
-                        }, 500);
-                        
-                        // 3. Show the "Back" menu
-                        showBackMenu();
-                    }
-                });
-            }
-
-            // Handle click on the BACK button
-            if (chatBackBtn) {
-                chatBackBtn.addEventListener('click', () => {
-                    // 1. Add a new bot message
-                    addMessageToChat("How else can I help you?", 'bot-message');
-                    
-                    // 2. Show the main menu again
-                    showMainMenu();
-                });
-            }
-            // --- END OF CHATBOT LOGIC ---
-
         });
     </script>
 
